@@ -1,0 +1,2 @@
+# TrainingMinion
+Training minion service.
