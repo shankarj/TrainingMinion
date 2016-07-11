@@ -1,0 +1,98 @@
+{
+  "network_structure": {
+    "i001": {
+      "_type": "element_input",
+      "_enabled_execution": true,
+      "_enabled_forward_training": true,
+      "_enabled_backward_training": true,
+      "props": {
+        "data_row": ""
+      },
+      "init": {
+        "dataset": "prop_elem:p001"
+      }
+    },
+    "e001": {
+      "_type": "element_simple_forwarder",
+      "_enabled_execution": true,
+      "_enabled_forward_training": true,
+      "_enabled_backward_training": true,
+      "props": {
+        "prop1": ""
+      },
+      "init": {
+      }
+    },
+    "e002": {
+      "_type": "element_simple_forwarder",
+      "_enabled_execution": true,
+      "_enabled_forward_training": true,
+      "_enabled_backward_training": true,
+      "props": {
+        "prop1": ""
+      },
+      "init": {
+      }
+    },
+    "e003": {
+      "_type": "element_simple_forwarder",
+      "_enabled_execution": true,
+      "_enabled_forward_training": true,
+      "_enabled_backward_training": true,
+      "props": {
+        "prop1": ""
+      },
+      "init": {
+      }
+    },
+    "p001": {
+      "_type": "prop_csv_dataset",
+      "_enabled_execution": true,
+      "_enabled_forward_training": true,
+      "_enabled_backward_training": true,
+      "props": {
+        "prop1": ""
+      },
+      "init": {
+      }
+    }
+  },
+
+  "network_conns": [
+    {
+      "source": "i001",
+      "dest": "e001",
+      "source_prop": "curr_data",
+      "dest_prop": "prop1",
+      "direction": "forward"
+    },
+    {
+      "source": "i001",
+      "dest": "e002",
+      "source_prop": "curr_data",
+      "dest_prop": "prop1",
+      "direction": "forward"
+    },
+    {
+      "source": "e001",
+      "dest": "e003",
+      "source_prop": "prop1",
+      "dest_prop": "prop1",
+      "direction": "forward"
+    },
+    {
+      "source": "e002",
+      "dest": "e003",
+      "source_prop": "prop1",
+      "dest_prop": "prop1",
+      "direction": "forward"
+    },
+    {
+      "source": "e003",
+      "dest": "_out",
+      "source_prop": "prop1",
+      "dest_prop": "",
+      "direction": "forward"
+    }
+  ]
+}

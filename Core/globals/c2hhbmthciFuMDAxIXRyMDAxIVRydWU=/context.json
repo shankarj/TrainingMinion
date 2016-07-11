@@ -1,0 +1,1 @@
+{"needs_training": true, "curr_training_row": 0, "training_done": false, "training_direction": "", "training_profile_id": "tr001", "curr_epoch": 0, "curr_batch_size": 0, "verbose": true, "network_id": "n001", "init_done": false, "engine_mode": "stopped"}
