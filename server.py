@@ -3,10 +3,7 @@ import os
 os.environ["DJANGO_SETTINGS_MODULE"] = "TrainingMinion.settings"
 
 import cherrypy
-
 import django
-django.setup()
-
 from django.conf import settings
 from django.core.handlers.wsgi import WSGIHandler
 
@@ -45,5 +42,6 @@ class DjangoApplication(object):
 
 
 if __name__ == "__main__":
+    django.setup()
     print ("Your app is running at http://localhost:8001")
     DjangoApplication().run()
