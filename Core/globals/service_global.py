@@ -1,15 +1,18 @@
 __author_ = "shankar"
 
-from Core.utils import json_util as ju
 import Core.globals as global_files
-
 import os
 
 # PyObjects of elements in Network structure stored in this dictionary.
 # Wrapper for operations on this : elements_manager.py
 elements_obj_dict = {}
 
-# Global variables for the engine
+# Global variables for the engine. Following vars are stored for each session:
+# 1. context_props
+# 2. network_conns
+# 3. network_structure
+# 4. training_data
+# 5. training_profile
 running_sessions = {
 
 }

@@ -168,8 +168,7 @@ def execute_forward_pass(session_id, inp_data):
                               "Exiting because input data is not valid for executing forward pass.")
 
     # Deactivating all the elements after the forward pass is done.
-    if cm.is_engine_training(session_id):
-        em.deactivate_all_elements(session_id)
+    em.deactivate_all_elements(session_id)
 
     return pass_success
 
@@ -219,7 +218,8 @@ def recursive_forward_pass(session_id, source_elem_id, dest_elem_id):
                 em.activate_element(session_id, source_elem_id)
 
                 # Write the dest elem's prop to the main JSON
-                em.write_props_to_structure(session_id, source_elem_id)
+                if cm.is_engine_training(session_id):
+                    em.write_props_to_structure(session_id, source_elem_id)
 
                 # Return the property values of the current element to it's destination
                 return em.get_conn_prop_values(session_id, source_elem_id, dest_elem_id, "forward", True)

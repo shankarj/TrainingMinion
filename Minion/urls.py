@@ -3,5 +3,6 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    url('index/(?P<temp_id>\w*)', views.index, name='index'),
+    url('train/(?P<session_id>.*)', views.train, name='train'),
+    url('run/(?P<session_id>.*)', views.run, name='run'),
 ]

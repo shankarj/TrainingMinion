@@ -44,8 +44,10 @@ def unset_verbose_mode(session_id):
 
 
 def is_network_initialized(session_id):
-    return service_global.running_sessions[session_id]["context_props"]["init_done"]
-
+    if session_id in service_global.running_sessions:
+        return service_global.running_sessions[session_id]["context_props"]["init_done"]
+    else:
+        return False
 
 def set_network_initialized(session_id):
     service_global.running_sessions[session_id]["context_props"]["init_done"] = True

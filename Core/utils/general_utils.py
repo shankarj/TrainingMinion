@@ -7,6 +7,7 @@ def get_session_variables(session_id):
     from Core.utils import output_util as out
     try:
         decoded_string = base64.b64decode(session_id)
+
         split_string = decoded_string.decode('utf-8').split("!")
 
         if len(split_string) == 4:

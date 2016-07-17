@@ -4,6 +4,7 @@ import Core.utils.output_util as oa
 from Core.wrappers import context_manager as cm
 from Core.engine import exec_engine as engine
 import Core.wrappers.engine_helper as engine_help
+import threading
 
 
 # ----------------
@@ -14,8 +15,9 @@ def initialize_network(session_id):
 
 
 def start_training(session_id):
-    return engine.train_network(session_id)
-
+    training_thread = threading.Thread(target=engine.train_network, args=(session_id,))
+    training_thread.start()
+    return True
 
 def run_network(session_id, input_data):
     return engine.run_network(session_id, input_data)
@@ -68,13 +70,17 @@ if __name__ == '__main__':
 
     encoded_session_id = base64.b64encode(bytes(session_id, "utf-8")).decode('ascii')
 
-    init_success = initialize_network(encoded_session_id)
-
     sample_input = {"i001": ["i001"]}
-    if init_success:
-        import json
-        start_training(encoded_session_id)
-        print("Training done.");
-        run_network(encoded_session_id, json.dumps(sample_input))
-        print (get_output(encoded_session_id))
 
+    import json
+    t = threading.Thread(target=start_training, args=(encoded_session_id,))
+    t.start()
+    print("Training Initiated.")
+    t.join()
+    print("Training Done.\n\n")
+
+    run_network(encoded_session_id, json.dumps(sample_input))
+
+    sample_input = {"i001": ["i003"]}
+    run_network(encoded_session_id, json.dumps(sample_input))
+    print(get_output(encoded_session_id))

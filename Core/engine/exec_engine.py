@@ -78,12 +78,16 @@ def init_engine(session_id):
 
 def train_network(session_id):
     training_success = False
+    init_done = True
 
-    # Set the mode to be training
-    cm.set_engine_training(session_id)
+    # Check if init is done already or kick init process.
+    if not cm.is_network_initialized(session_id):
+        init_done = init_engine(session_id)
 
-    # Set engine mode to training.
-    if cm.is_network_initialized(session_id):
+    if init_done:
+        # Set the mode to be training
+        cm.set_engine_training(session_id)
+
         if cm.needs_training(session_id):
             out.write_verbose_msg(session_id, "element", 0, "Network initialized. Init engine for training.")
             cm.set_training_not_done(session_id)
@@ -125,7 +129,7 @@ def train_network(session_id):
             out.write_verbose_msg(session_id, "element", 1,
                                   "Network initialized. Settings indicate NO training needed.")
     else:
-        out.write_verbose_msg(session_id, "element", 2, "Network not initialized before training.")
+        out.write_verbose_msg(session_id, "element", 2, "Error while initializing network for id : " + session_id)
 
     cm.set_engine_stopped(session_id)
     return training_success
