@@ -3,19 +3,76 @@ import json
 from django.http import HttpResponse
 from Core import core_api
 
+
+def trainingsessions(request):
+    response_json = {}
+    try:
+        sessions = core_api.get_training_sessions()
+        response_json["status"] = True
+        response_json["sessions"] = sessions
+    except Exception as e:
+        response_json["status"] = False
+        response_json["message"] = "Error while obtaining list of training sessions. " + str(e)
+
+    return HttpResponse(json.dumps(response_json), content_type='application/json')
+
+
+def runningsessions(request):
+    response_json = {}
+    try:
+        sessions = core_api.get_running_sessions()
+        response_json["status"] = True
+        response_json["sessions"] = sessions
+    except Exception as e:
+        response_json["status"] = False
+        response_json["message"] = "Error while obtaining list of running sessions. " + str(e)
+
+    return HttpResponse(json.dumps(response_json), content_type='application/json')
+
+
+def statusurl(request, session_id):
+    response_json = {}
+    try:
+        url = core_api.get_endpoint(session_id)
+        response_json["status"] = True
+        response_json["url"] = url
+    except Exception as e:
+        response_json["status"] = False
+        response_json["message"] = "Error while obtaining status url for " + session_id + ". " + str(e)
+
+    return HttpResponse(json.dumps(response_json), content_type='application/json')
+
+
+def state(request, session_id):
+    response_json = {}
+    try:
+        mode = core_api.get_engine_state(session_id)
+        response_json["status"] = True
+        response_json["state"] = mode
+    except Exception as e:
+        response_json["status"] = False
+        response_json["message"] = "Error while obtaining engine state for " + session_id + ". " + str(e)
+
+    return HttpResponse(json.dumps(response_json), content_type='application/json')
+
+
+def delete(request, session_id):
+    pass
+
+
 def train(request, session_id):
     response_json = {"status": None}
     if session_id:
-        print (session_id)
-        status = core_api.start_training(session_id)
+        status, msg = core_api.start_training(session_id)
         response_json["status"] = status
         response_json["endpoint"] = "sample_endpoint"
         response_json[
-            "message"] = "Training request has been initiated. Please connect to the socket endpoint for updates."
+            "message"] = msg
     else:
         response_json["status"] = "Error"
 
     return HttpResponse(json.dumps(response_json), content_type='application/json')
+
 
 @csrf_exempt
 def run(request, session_id):

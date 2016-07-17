@@ -1,6 +1,18 @@
 from Core.globals import service_global
 import Core.wrappers.elements_manager as em
 
+# Remove the given session id from the list of running training session ids
+def get_training_sessions():
+    return service_global.training_sessions
+
+# Remove the given session id from the list of running training session ids
+def remove_from_training_sessions(session_id):
+    service_global.training_sessions.remove(session_id)
+
+# Add the given session id to the list of running training session ids
+def add_to_training_sessions(session_id):
+    service_global.training_sessions.append(session_id)
+
 # Increments curr_row, curr_batch's size and clears
 # counter on reaching dataset end (epoch done).
 def update_training_counters(session_id):

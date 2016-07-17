@@ -5,6 +5,21 @@ import Core.wrappers.training_helper as th
 from Core.wrappers import context_manager as cm
 import copy
 
+# Get the engine mode
+def get_engine_mode(session_id):
+    return service_global.running_sessions[session_id]["context_props"]["engine_mode"]
+
+# Get the status endpoint for the session id.
+def get_endpoint(session_id):
+    return service_global.running_sessions[session_id]["endpoint"]
+
+# Get a list of running sessions in engine
+def get_running_sessions():
+    sessions_list = []
+    for key in service_global.running_sessions.keys():
+        sessions_list.append(key)
+
+    return sessions_list
 
 # Assigns from the input data, the data for each of the input element.
 def set_input_elem_data(session_id, inp_data):

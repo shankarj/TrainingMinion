@@ -122,6 +122,8 @@ def is_engine_stopped(session_id):
     else:
         return False
 
+def get_engine_mode(session_id):
+    return service_global.running_sessions[session_id]["context_props"]["engine_mode"]
 
 def needs_training(session_id):
     return service_global.running_sessions[session_id]["context_props"]["needs_training"]

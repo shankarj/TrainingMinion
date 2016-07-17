@@ -1,1 +1,1 @@
-{"training_data": {"i001": {"prop": {"type": "csv", "size": 3, "location": ""}}}, "training_profile": {"profile_id": "tr001", "epochs": 1, "batch_size": 2, "training_type": "online", "dataset_size": 3}}
+{"training_data": {"i001": {"prop": {"location": "", "size": 3, "type": "csv"}}}, "training_profile": {"profile_id": "tr001", "batch_size": 2, "epochs": 1, "training_type": "online", "dataset_size": 3}}

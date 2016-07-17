@@ -3,7 +3,8 @@ __author__ = 'shankar'
 import Core.utils.output_util as oa
 from Core.wrappers import context_manager as cm
 from Core.engine import exec_engine as engine
-import Core.wrappers.engine_helper as engine_help
+import Core.wrappers.engine_helper as engine_helper
+import Core.wrappers.training_helper as training_helper
 import threading
 
 
@@ -13,30 +14,36 @@ import threading
 def initialize_network(session_id):
     return engine.init_engine(session_id)
 
-
 def start_training(session_id):
-    training_thread = threading.Thread(target=engine.train_network, args=(session_id,))
-    training_thread.start()
-    return True
+    if len(training_helper.get_training_sessions()) == 0:
+        training_thread = threading.Thread(target=engine.train_network, args=(session_id,))
+        training_thread.start()
+        return True, "Training request has been initiated. Please connect to the socket endpoint for updates."
+    else:
+        return False, "Currently running a training session. Exiting."
 
 def run_network(session_id, input_data):
     return engine.run_network(session_id, input_data)
 
 
 def get_output(session_id):
-    return engine_help.get_output_data(session_id)
+    return engine_helper.get_output_data(session_id)
 
 
 # ----------------
 # Additional routines
 # ----------------
-def update_training_profile():
-    pass
+def get_training_sessions():
+    return training_helper.get_training_sessions()
 
+def get_running_sessions():
+    return engine_helper.get_running_sessions()
 
-def refresh_training_data():
-    pass
+def get_endpoint(session_id):
+    return engine_helper.get_endpoint(session_id)
 
+def get_engine_state(session_id):
+    return engine_helper.get_engine_mode(session_id)
 
 # ----------------
 # Config updates
@@ -55,8 +62,7 @@ def reset_network(session_id):
     cm.set_network_deinitialized(session_id)
 
 
-def get_socket_endpoint():
-    pass
+
 
 
 if __name__ == '__main__':

@@ -16,6 +16,7 @@ def create_session(session_id):
 
             if context_set:
                 method_success = True
+                service_global.running_sessions[session_id]["endpoint"] = "sample_endpoint"
     except Exception as ex:
         out.write_verbose_msg(session_id, "engine", 2, "Session create failed. " + str(ex))
 

@@ -7,6 +7,9 @@ import os
 # Wrapper for operations on this : elements_manager.py
 elements_obj_dict = {}
 
+# Session ids of the networks that are currently being trained.
+training_sessions = []
+
 # Global variables for the engine. Following vars are stored for each session:
 # 1. context_props
 # 2. network_conns
