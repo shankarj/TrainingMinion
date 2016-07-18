@@ -63,13 +63,18 @@ def delete(request, session_id):
 def train(request, session_id):
     response_json = {"status": None}
     if session_id:
-        status, msg = core_api.start_training(session_id)
-        response_json["status"] = status
-        response_json["endpoint"] = "sample_endpoint"
-        response_json[
-            "message"] = msg
+        try:
+            status, msg = core_api.start_training(session_id)
+            response_json["status"] = status
+            response_json["endpoint"] = "sample_endpoint"
+            response_json[
+                "message"] = msg
+        except Exception as ex:
+            response_json["status"] = "Error"
+            response_json["message"] = str(ex)
     else:
         response_json["status"] = "Error"
+        response_json["message"] = "Session id not given."
 
     return HttpResponse(json.dumps(response_json), content_type='application/json')
 
@@ -78,10 +83,14 @@ def train(request, session_id):
 def run(request, session_id):
     response_json = {"status": None}
     if session_id:
-        json_data = json.loads(request.body.decode("utf-8"))
-        status = core_api.run_network(session_id, json.dumps(json_data))
-        response_json["status"] = status
-        response_json["output"] = core_api.get_output(session_id)
+        try:
+            json_data = json.loads(request.body.decode("utf-8"))
+            status = core_api.run_network(session_id, json.dumps(json_data))
+            response_json["status"] = status
+            response_json["output"] = core_api.get_output(session_id)
+        except Exception as ex:
+            response_json["status"] = "Error"
+            response_json["message"] = str(ex)
     else:
         response_json["status"] = "Error"
 
