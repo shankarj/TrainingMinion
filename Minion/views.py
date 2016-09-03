@@ -42,6 +42,11 @@ def statusurl(request, session_id):
 
     return HttpResponse(json.dumps(response_json), content_type='application/json')
 
+def health(request):
+    response_json = {}
+    response_json["status"] = True
+    response_json["message"] = "Minion running. Status is healthy. Port : " + str(core_api.get_engine_port())
+    return HttpResponse(json.dumps(response_json), content_type='application/json')
 
 def state(request, session_id):
     response_json = {}

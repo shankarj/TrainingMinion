@@ -10,4 +10,5 @@ urlpatterns = [
     url('delete/(?P<session_id>.*)', views.delete, name='delete'),
     url('train/(?P<session_id>.*)', views.train, name='train'),
     url('run/(?P<session_id>.*)', views.run, name='run'),
+    url('health', views.health, name='health'),
 ]

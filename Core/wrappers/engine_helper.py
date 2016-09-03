@@ -5,6 +5,12 @@ import Core.wrappers.training_helper as th
 from Core.wrappers import context_manager as cm
 import copy
 
+def set_engine_port(port):
+    service_global.my_port = port
+
+def get_engine_port():
+    return service_global.my_port
+
 # Get the engine mode
 def get_engine_mode(session_id):
     return service_global.running_sessions[session_id]["context_props"]["engine_mode"]

@@ -57,6 +57,11 @@ def set_verbose(session_id, verbose):
     else:
         oa.write_verbose_msg("Verbose input should be a bool.")
 
+def set_engine_port(port):
+    engine_helper.set_engine_port(port)
+
+def get_engine_port():
+    return engine_helper.get_engine_port()
 
 def reset_network(session_id):
     cm.set_network_deinitialized(session_id)

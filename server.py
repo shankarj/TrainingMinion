@@ -1,16 +1,15 @@
 import os
-
+import sys
 os.environ["DJANGO_SETTINGS_MODULE"] = "TrainingMinion.settings"
 
 import cherrypy
 import django
 from django.conf import settings
 from django.core.handlers.wsgi import WSGIHandler
-
+import Core.core_api as core_api
 
 class DjangoApplication(object):
     HOST = "127.0.0.1"
-    PORT = 8001
 
     def mount_static(self, url, root):
         """
@@ -25,10 +24,10 @@ class DjangoApplication(object):
         }
         cherrypy.tree.mount(None, url, {'/': config})
 
-    def run(self):
+    def run(self, port):
         cherrypy.config.update({
             'server.socket_host': self.HOST,
-            'server.socket_port': self.PORT,
+            'server.socket_port': port,
             'engine.autoreload_on': False,
             'log.screen': True
         })
@@ -42,6 +41,12 @@ class DjangoApplication(object):
 
 
 if __name__ == "__main__":
+    try:
+        port = sys.argv[1]
+    except Exception as ex:
+        port = 8000
+
     django.setup()
-    print ("Your app is running at http://localhost:8001")
-    DjangoApplication().run()
+    print ("Your app is running at http://localhost:" + str(port))
+    core_api.set_engine_port(port)
+    DjangoApplication().run(int(port))

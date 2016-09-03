@@ -3,6 +3,9 @@ __author_ = "shankar"
 import Core.globals as global_files
 import os
 
+# Minion port
+my_port = 0000
+
 # PyObjects of elements in Network structure stored in this dictionary.
 # Wrapper for operations on this : elements_manager.py
 elements_obj_dict = {}
