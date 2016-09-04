@@ -289,9 +289,38 @@ def execute_backward_pass(session_id):
     if cm.is_engine_training(session_id):
         th.set_backward_direction(session_id)
 
+    # Call the backward pass utility starting for each element other than props.
+    try:
+        for elem in ns.get_elems_id_list(session_id):
+            elem_obj = em.get_elem_obj(session_id, elem)
+            if elem_obj.props["_type"] == "element":
+                pass_success = elem_obj.train_backward_pass()
+                if not pass_success:
+                    out.write_verbose_msg("engine", 2, "Backward pass failed for " + elem_obj.my_id)
+                    break
+
+        pass_success = True
+    except Exception as e:
+        out.write_verbose_msg("engine", 2, "Backward pass failed : " + e.message)
+
+    # Deactivating all the elements after the backward pass is done.
+    if cm.is_engine_training(session_id):
+        em.deactivate_all_elements(session_id)
+
+    return pass_success
+
+def execute_backward_pass_old(session_id):
+    from Core.utils import output_util as out
+    pass_success = False
+
+    # Set training direction.
+    if cm.is_engine_training(session_id):
+        th.set_backward_direction(session_id)
+
     # Call the recursive backward pass utility starting from each input element.
     try:
         for elem in ns.get_input_elem_list(session_id):
+            ns.get_elems_id_list()
             recursive_backward_pass(session_id, None, elem)
 
         pass_success = True

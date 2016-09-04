@@ -24,8 +24,7 @@ class SimpleForwarderElement(AbstractElement):
         return True
 
     def train_backward_pass(self):
-        self.props["prop1"].append(self.my_id)
-        print("FROM : " + self.my_id + ". " + str(self.props["prop1"]))
+        print("Backward pass called for : " + self.my_id)
         return True
 
     def execute(self):
