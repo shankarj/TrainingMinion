@@ -3,6 +3,9 @@ __author_ = "shankar"
 import Core.globals as global_files
 import os
 
+# Minion id
+my_id = ""
+
 # Minion port
 my_port = 0000
 

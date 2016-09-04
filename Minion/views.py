@@ -45,7 +45,7 @@ def statusurl(request, session_id):
 def health(request):
     response_json = {}
     response_json["status"] = True
-    response_json["message"] = "Minion running. Status is healthy. Port : " + str(core_api.get_engine_port())
+    response_json["message"] = "Minion running. Status is healthy. Port : " + str(core_api.get_engine_id())
     return HttpResponse(json.dumps(response_json), content_type='application/json')
 
 def state(request, session_id):
@@ -62,7 +62,15 @@ def state(request, session_id):
 
 
 def delete(request, session_id):
-    pass
+    response_json = {}
+    try:
+        core_api.delete_session(session_id)
+        response_json["status"] = "success"
+    except Exception as e:
+        response_json["status"] = "error"
+        response_json["message"] = "Error while deleting session " + session_id + ". " + str(e)
+
+    return HttpResponse(json.dumps(response_json), content_type='application/json')
 
 
 def train(request, session_id):

@@ -2,6 +2,19 @@ from Core.globals import service_global
 from Core.utils import general_utils as gu
 from Core.wrappers import context_manager as cm
 
+
+# Hard reset for the given session id if already present
+def delete_session(session_id):
+    if session_id in service_global.running_sessions:
+        service_global.running_sessions.remove(session_id)
+
+    if session_id in service_global.training_sessions:
+        service_global.training_sessions.remove(session_id)
+
+    gu.delete_session_directory(session_id)
+
+    # Also notify the leader that this session is deleted. Very important.
+
 def session_exists(session_id):
     if session_id in service_global.running_sessions:
         return True

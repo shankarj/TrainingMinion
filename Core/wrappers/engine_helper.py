@@ -8,19 +8,6 @@ from Core.enums.network_call_type import NetworkCallType
 from Core.utils import general_utils as gu
 import copy
 
-# Hard reset for the given session id if already present
-def clear_session(session_id):
-    if session_id in service_global.running_sessions:
-        service_global.running_sessions.remove(session_id)
-
-    if session_id in service_global.training_sessions:
-        service_global.training_sessions.remove(session_id)
-
-    gu.delete_session_directory(session_id)
-
-    # Also notify the leader that this session is deleted. Very important.
-
-
 # Sets the needed context variables for the engine.
 def set_network_context(session_id):
     method_success = False
@@ -38,11 +25,11 @@ def set_network_context(session_id):
 
     return method_success
 
-def set_engine_port(port):
-    service_global.my_port = port
+def set_engine_id(id):
+    service_global.my_id = id
 
-def get_engine_port():
-    return service_global.my_port
+def get_engine_id():
+    return service_global.my_id
 
 # Get the engine mode
 def get_engine_mode(session_id):

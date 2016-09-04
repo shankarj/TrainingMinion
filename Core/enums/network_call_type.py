@@ -8,3 +8,4 @@ class NetworkCallType(Enum):
     get_training_profile = 2
     get_network_structure = 3
     get_network_context = 4
+    notify_training_done = 5

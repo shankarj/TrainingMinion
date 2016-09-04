@@ -16,7 +16,7 @@ def init_engine(session_id):
 
     # Hard reset here.
     # Remove from executing, training and running sessions if already present.
-    eh.clear_session(session_id)
+    sm.delete_session(session_id)
 
     # Create the session variables
     status_one = sm.create_session(session_id)
@@ -144,7 +144,7 @@ def train_network(session_id):
     except Exception as ex:
         # clear the session data on any exception
         out.write_verbose_msg(session_id, "engine", 100, "Error while initiating network training for id : " + session_id)
-        eh.clear_session(session_id)
+        sm.delete_session(session_id)
 
     return training_success
 

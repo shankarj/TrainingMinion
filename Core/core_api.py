@@ -5,6 +5,7 @@ from Core.wrappers import context_manager as cm
 from Core.engine import exec_engine as engine
 import Core.wrappers.engine_helper as engine_helper
 import Core.wrappers.training_helper as training_helper
+from Core.wrappers import session_manager as sm
 import threading
 
 
@@ -33,6 +34,9 @@ def get_output(session_id):
 # ----------------
 # Additional routines
 # ----------------
+def delete_session(session_id):
+    return sm.delete_session(session_id)
+
 def get_training_sessions():
     return training_helper.get_training_sessions()
 
@@ -57,11 +61,11 @@ def set_verbose(session_id, verbose):
     else:
         oa.write_verbose_msg("Verbose input should be a bool.")
 
-def set_engine_port(port):
-    engine_helper.set_engine_port(port)
+def set_engine_id(id):
+    engine_helper.set_engine_id(id)
 
-def get_engine_port():
-    return engine_helper.get_engine_port()
+def get_engine_id():
+    return engine_helper.get_engine_id()
 
 def reset_network(session_id):
     cm.set_network_deinitialized(session_id)

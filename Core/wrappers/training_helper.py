@@ -1,5 +1,7 @@
 from Core.globals import service_global
 import Core.wrappers.elements_manager as em
+from Core.utils import network_util as nu
+from Core.enums.network_call_type import NetworkCallType
 
 # Remove the given session id from the list of running training session ids
 def get_training_sessions():
@@ -8,6 +10,9 @@ def get_training_sessions():
 # Remove the given session id from the list of running training session ids
 def set_post_training(session_id):
     service_global.training_sessions.remove(session_id)
+
+    # Notify leader of completion
+    nu.network_call(NetworkCallType.notify_training_done, sess_id=session_id)
 
 # Add the given session id to the list of running training session ids
 def add_to_training_sessions(session_id):

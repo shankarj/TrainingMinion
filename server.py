@@ -48,5 +48,8 @@ if __name__ == "__main__":
 
     django.setup()
     print ("Your app is running at http://localhost:" + str(port))
-    core_api.set_engine_port(port)
-    DjangoApplication().run(int(port))
+    try:
+        core_api.set_engine_id(sys.argv[2])
+        DjangoApplication().run(int(port))
+    except Exception as ex:
+        pass
