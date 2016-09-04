@@ -6,7 +6,7 @@ def get_training_sessions():
     return service_global.training_sessions
 
 # Remove the given session id from the list of running training session ids
-def remove_from_training_sessions(session_id):
+def set_post_training(session_id):
     service_global.training_sessions.remove(session_id)
 
 # Add the given session id to the list of running training session ids

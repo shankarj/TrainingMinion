@@ -67,15 +67,10 @@ def reset_network(session_id):
     cm.set_network_deinitialized(session_id)
 
 
-
-
-
 if __name__ == '__main__':
     user_id = "shankar"
     network_id = "n001"
-    training_profile_id = "tr001"
-    verbose = True
-    session_id = user_id + "!" + network_id + "!" + training_profile_id + "!" + str(verbose)
+    session_id = user_id + "!" + network_id
 
     import base64
 
@@ -83,15 +78,10 @@ if __name__ == '__main__':
 
     sample_input = {"i001": ["i001"]}
 
-    import json
-    t = threading.Thread(target=start_training, args=(encoded_session_id,))
-    t.start()
-    print("Training Initiated.")
-    t.join()
-    print("Training Done.\n\n")
+    start_training(encoded_session_id)
 
-    run_network(encoded_session_id, json.dumps(sample_input))
-
-    sample_input = {"i001": ["i003"]}
-    run_network(encoded_session_id, json.dumps(sample_input))
-    print(get_output(encoded_session_id))
+    # run_network(encoded_session_id, json.dumps(sample_input))
+    #
+    # sample_input = {"i001": ["i003"]}
+    # run_network(encoded_session_id, json.dumps(sample_input))
+    # print(get_output(encoded_session_id))

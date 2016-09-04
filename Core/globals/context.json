@@ -2,8 +2,6 @@
   "training_direction": "forward",
   "engine_mode": "training",
   "verbose": true,
-
-  "needs_training": true,
   "network_id": "s001",
   "init_done": false,
   "state": "running",

@@ -8,18 +8,13 @@ from Core.enums.engine_mode import EngineMode
 # Set the context of a given session variables
 def set_network_context(user_id, network_id, training_profile_id, verbose, actual_session_id):
     from Core.utils import output_util as out
-    needs_training = False
-
-    if training_profile_id:
-        needs_training = True
 
     # Create the context dict to be persisted.
     network_context = {
         "verbose": verbose,
         "user_id": user_id,
         "network_id": network_id,
-        "training_profile_id": training_profile_id,
-        "needs_training": needs_training
+        "training_profile_id": training_profile_id
     }
 
     method_success = out.persist_context_props(actual_session_id, network_context)
@@ -89,12 +84,6 @@ def set_engine_training(session_id):
 
 
 def set_engine_init(session_id):
-    service_global.running_sessions[session_id] = {}
-    service_global.running_sessions[session_id]["context_props"] = {}
-    service_global.running_sessions[session_id]["network_structure"] = {}
-    service_global.running_sessions[session_id]["network_conns"] = {}
-    service_global.running_sessions[session_id]["training_profile"] = {}
-    service_global.running_sessions[session_id]["training_data"] = {}
     service_global.running_sessions[session_id]["context_props"]["engine_mode"] = EngineMode.init.name
 
 
@@ -126,4 +115,7 @@ def get_engine_mode(session_id):
     return service_global.running_sessions[session_id]["context_props"]["engine_mode"]
 
 def needs_training(session_id):
-    return service_global.running_sessions[session_id]["context_props"]["needs_training"]
+    if service_global.running_sessions[session_id]["context_props"]["training_profile_id"] != "none":
+        return True
+    else:
+        return False

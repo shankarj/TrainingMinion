@@ -1,5 +1,6 @@
 import base64
 import os
+import shutil
 from Core.globals import service_global
 
 # Break the input session id to get the needed session variables
@@ -10,12 +11,10 @@ def get_session_variables(session_id):
 
         split_string = decoded_string.decode('utf-8').split("!")
 
-        if len(split_string) == 4:
+        if len(split_string) == 2:
             session_variables = {
                 "user_id" : split_string[0],
                 "network_id" : split_string[1],
-                "training_profile_id": split_string[2],
-                "verbose": get_bool_value(split_string[3])
             }
             return session_variables
         else:
@@ -39,3 +38,8 @@ def create_session_directory(session_id):
     if not os.path.exists(directory_path):
         os.makedirs(directory_path)
         os.makedirs(directory_path + "/data")
+
+def delete_session_directory(session_id):
+    directory_path = service_global.globals_path + "/" + session_id
+    if os.path.exists(directory_path):
+        shutil.rmtree(directory_path, ignore_errors=True)

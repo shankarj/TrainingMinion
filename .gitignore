@@ -47,7 +47,3 @@ jspm_packages
 .DS_Store
 
 .idea/workspace.xml
-
-*.pyc
-
-*.pyc

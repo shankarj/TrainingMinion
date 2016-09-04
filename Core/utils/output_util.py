@@ -163,7 +163,6 @@ def persist_context_props(session_id, network_context):
         old_context_props["network_id"] = network_context["network_id"]
         old_context_props["training_profile_id"] = network_context["training_profile_id"]
         old_context_props["verbose"] = network_context["verbose"]
-        old_context_props["needs_training"] = network_context["needs_training"]
 
         context_props_file = open(file_path, "w+")
         context_props_file.write(json.dumps(old_context_props))

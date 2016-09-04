@@ -1,6 +1,4 @@
 {
-  "network_id": "s001",
   "training_profile_id": "tr001",
-  "verbose": true,
-  "needs_training": false
+  "verbose": true
 }
