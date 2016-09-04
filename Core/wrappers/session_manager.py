@@ -2,6 +2,11 @@ from Core.globals import service_global
 from Core.utils import general_utils as gu
 from Core.wrappers import context_manager as cm
 
+def session_exists(session_id):
+    if session_id in service_global.running_sessions:
+        return True
+    else:
+        return  False
 
 def create_session(session_id):
     from Core.utils import output_util as out

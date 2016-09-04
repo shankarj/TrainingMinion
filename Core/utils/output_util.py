@@ -11,8 +11,11 @@ from Core.enums.engine_mode import EngineMode
 # Writes all the verbose messages onto console or to sockets as needed.
 def write_verbose_msg(session_id, source, type, msg):
     if source == "engine":
-        if cm.is_verbose_mode(session_id):
+        if type == 100:
             print(str(type) + " : " + msg)
+        else:
+            if cm.is_verbose_mode(session_id):
+                print(str(type) + " : " + msg)
     elif source == "element":
         if cm.is_verbose_mode(session_id):
             print(str(type) + " : " + msg)

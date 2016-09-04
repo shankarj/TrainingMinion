@@ -73,14 +73,16 @@ if __name__ == '__main__':
     session_id = user_id + "!" + network_id
 
     import base64
+    import json
 
     encoded_session_id = base64.b64encode(bytes(session_id, "utf-8")).decode('ascii')
 
     sample_input = {"i001": ["i001"]}
 
     start_training(encoded_session_id)
-
-    # run_network(encoded_session_id, json.dumps(sample_input))
+    import time
+    time.sleep(1)
+    run_network(encoded_session_id, json.dumps(sample_input))
     #
     # sample_input = {"i001": ["i003"]}
     # run_network(encoded_session_id, json.dumps(sample_input))

@@ -1,1 +1,1 @@
-{"engine_mode": "stopped", "curr_batch_size": 0, "training_profile_id": "tr001", "init_done": false, "training_done": false, "training_direction": "", "verbose": true, "curr_epoch": 0, "curr_training_row": 0, "network_id": "n001"}
+{"curr_epoch": 0, "verbose": true, "training_direction": "", "curr_batch_size": 0, "curr_training_row": 0, "engine_mode": "stopped", "training_profile_id": "tr001", "init_done": false, "network_id": "n001", "training_done": false}

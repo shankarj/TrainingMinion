@@ -26,12 +26,12 @@ def init_engine(session_id):
 
     out.write_verbose_msg(session_id, "engine", 0, "Network session created and context set.")
 
-    # Set engine as init because we don't want to serve any requests even while init
-    # is running
-    cm.set_engine_init(session_id)
-
     # Download and init the network structure
     if status_one and status_two:
+        # Set engine as init because we don't want to serve any requests even while init
+        # is running
+        cm.set_engine_init(session_id)
+
         out.write_verbose_msg(session_id, "engine", 0, "Downloading network structure")
 
         session_variables = gu.get_session_variables(session_id)
@@ -83,6 +83,9 @@ def train_network(session_id):
     training_success = False
     init_done = True
 
+    # We don't check for idle engine before starting training here because the api call
+    # ensures an idle engine by enforcing a strict one training job limit per minion at
+    # a given time.
     try:
         # Check if init is done already or kick init process.
         if not cm.is_network_initialized(session_id):
@@ -94,12 +97,12 @@ def train_network(session_id):
             th.add_to_training_sessions(session_id)
 
             if cm.needs_training(session_id):
-                out.write_verbose_msg(session_id, "element", 0, "Network initialized. Init engine for training.")
+                out.write_verbose_msg(session_id, "engine", 0, "Network initialized. Init engine for training.")
                 cm.set_training_not_done(session_id)
 
                 # Loop until training is not finished.
                 # One loop does one iteration (set of forward and one backward pass).
-                out.write_verbose_msg(session_id, "element", 0, "Starting training.")
+                out.write_verbose_msg(session_id, "engine", 0, "Starting training.")
                 while not cm.is_training_done(session_id):
                     if not cm.is_engine_paused(session_id):
                         # Start the forward pass.
@@ -131,15 +134,16 @@ def train_network(session_id):
                 else:
                     out.write_verbose_msg(session_id, "engine", 2, "Training exited before completing.")
             else:
-                out.write_verbose_msg(session_id, "element", 1,
+                out.write_verbose_msg(session_id, "engine", 1,
                                       "Network initialized. Settings indicate NO training needed.")
         else:
-            out.write_verbose_msg(session_id, "element", 2, "Error while initializing network for id : " + session_id)
+            out.write_verbose_msg(session_id, "engine", 2, "Error while initializing network for id : " + session_id)
 
         cm.set_engine_stopped(session_id)
         th.set_post_training(session_id)
     except Exception as ex:
         # clear the session data on any exception
+        out.write_verbose_msg(session_id, "engine", 100, "Error while initiating network training for id : " + session_id)
         eh.clear_session(session_id)
 
     return training_success
@@ -148,33 +152,44 @@ def train_network(session_id):
 def run_network(session_id, inp):
     run_success = False
 
-    # Set the mode to be executing
-    cm.set_engine_executing(session_id)
-
-    network_trained = False
-    if cm.is_network_initialized(session_id):
-        # Check if training is done (if needed). Otherwise assume training is done
-        if cm.needs_training(session_id):
-            if cm.is_training_done(session_id):
-                network_trained = True
-        else:
-            network_trained = True
-
-        if network_trained:
-            out.write_verbose_msg(session_id, "element", 0, "Network initialized. Reading the input.")
-            inp_dict = ju.json_to_dict(inp)
-
-            if inp_dict:
-                out.write_verbose_msg(session_id, "element", 0, "Input parsed. Starting engine.")
+    try:
+        if sm.session_exists(session_id):
+            if cm.is_engine_stopped(session_id):
+                # Set the mode to be executing
                 cm.set_engine_executing(session_id)
 
-                # Actual forward pass call
-                if not eh.execute_forward_pass(session_id, inp_dict):
-                    out.write_verbose_msg(session_id, "element", 2, "Execution failure. Exiting")
+                network_trained = False
+                if cm.is_network_initialized(session_id):
+                    # Check if training is done (if needed). Otherwise assume training is done
+                    if cm.needs_training(session_id):
+                        if cm.is_training_done(session_id):
+                            network_trained = True
+                    else:
+                        network_trained = True
 
-                run_success = True
-    else:
-        out.write_verbose_msg(session_id, "element", 2, "Network not initialized before running.")
+                    if network_trained:
+                        out.write_verbose_msg(session_id, "engine", 0, "Network initialized. Reading the input.")
+                        inp_dict = ju.json_to_dict(inp)
 
-    cm.set_engine_stopped(session_id)
+                        if inp_dict:
+                            out.write_verbose_msg(session_id, "engine", 0, "Input parsed. Starting engine.")
+                            cm.set_engine_executing(session_id)
+
+                            # Actual forward pass call
+                            if not eh.execute_forward_pass(session_id, inp_dict):
+                                out.write_verbose_msg(session_id, "engine", 2, "Execution failure. Exiting")
+
+                            run_success = True
+                else:
+                    out.write_verbose_msg(session_id, "engine", 2, "Network not initialized before running.")
+
+                cm.set_engine_stopped(session_id)
+            else:
+                out.write_verbose_msg(session_id, "engine", 100, "Engine busy. Execution cancelled.")
+        else:
+            out.write_verbose_msg(session_id, "engine", 100, "Session id does not exist in the minion to execute.")
+    except Exception as ex:
+        out.write_verbose_msg(session_id, "engine", 100, "Execution err : " + str(ex))
+        cm.set_engine_stopped(session_id)
+
     return run_success

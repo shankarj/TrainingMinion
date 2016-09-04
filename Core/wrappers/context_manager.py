@@ -106,7 +106,7 @@ def is_engine_executing(session_id):
 
 
 def is_engine_stopped(session_id):
-    if service_global.running_sessions[session_id]["context_props"]["engine_mode"] == EngineMode.idle.name:
+    if service_global.running_sessions[session_id]["context_props"]["engine_mode"] == EngineMode.stopped.name:
         return True
     else:
         return False
