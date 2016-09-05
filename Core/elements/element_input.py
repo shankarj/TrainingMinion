@@ -14,14 +14,12 @@ class InputElement(AbstractElement):
             "curr_data": None
         }
         self.prop_interface = {
-            "dataset": ["data", "curr_row_index"]
+            "dataset": ["data", "curr_row_index", "file_name"]
         }
 
     def init_element(self):
         init_success = False
         if isinstance(self.props["dataset"], AbstractPropertyElement):
-            self.props["dataset"].set_prop_val("file_name", self.my_id)
-
             if self.props["dataset"].init_element():
                 init_success = True
 

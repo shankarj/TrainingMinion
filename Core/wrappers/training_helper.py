@@ -1,6 +1,7 @@
 from Core.globals import service_global
 import Core.wrappers.elements_manager as em
 from Core.utils import network_util as nu
+from Core.wrappers import ns_wrapper as ns
 from Core.enums.network_call_type import NetworkCallType
 
 # Remove the given session id from the list of running training session ids
@@ -27,7 +28,7 @@ def update_training_counters(session_id):
 
     # Get the curr_training_row data and the expected values from each
     # of the input dataset as given during designing.
-    input_dataset_elems = service_global.running_sessions[session_id]["training_data"].keys()
+    input_dataset_elems =  ns.get_input_elem_list(session_id)
 
     if input_dataset_elems and not len(input_dataset_elems) < 1:
         all_success = True

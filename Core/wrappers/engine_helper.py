@@ -135,25 +135,10 @@ def create_init_network(session_id):
                     if not prop_init_dict[prop] == None:
                         prop_val = prop_init_dict[prop]
                         if isinstance(prop_val, str) and prop_val.split(":")[0] == "prop_elem":
-                            # This means that the current property has a property element
-                            # associated with it. Let us create that element and assign it.
-                            try:
-                                prop_elem_id = prop_val.split(":")[1]
-                                elem_type = ns.get_elem_type(session_id, prop_elem_id)
-                                prop_create_status = em.create_elem_obj(session_id, prop_elem_id, elem_type)
-
-                                if prop_create_status:
-                                    prop_elem_obj = em.get_elem_obj(session_id, prop_elem_id)
-                                    prop_elem_obj.props["_session_id"] = session_id
-                                    prop_elem_obj.props["_session_path"] = service_global.globals_path
-                                    elem_obj.props[prop] = prop_elem_obj
-                                else:
-                                    all_success = False
-                                    break
-                            except Exception as e:
-                                out.write_verbose_msg(session_id, "engine", 2,
-                                                      "Error while creating property element for : " + elem_id + ". Error : " + str(
-                                                          e))
+                            prop_obj = create_init_property_elements(session_id, prop_val)
+                            if prop_obj is not None:
+                                elem_obj.props[prop] = prop_obj
+                            else:
                                 all_success = False
                                 break
                         else:
@@ -167,7 +152,7 @@ def create_init_network(session_id):
                     # Call the element's init ( only if it's not a property element. This
                     # is checked in the beginning itself)
                     if not elem_obj.init_element():
-                        out.write_verbose_msg(session_id, "engine", 2, "Error while element initialization : " + str(e))
+                        out.write_verbose_msg(session_id, "engine", 2, "Error while element initialization for : " + elem_id)
                         all_success = False
                         break
             else:
@@ -181,6 +166,44 @@ def create_init_network(session_id):
 
     return method_success
 
+# This routine recursively creates all the property elements linked to an element.
+def create_init_property_elements(session_id, prop_val):
+    all_success = True
+    try:
+        prop_elem_id = prop_val.split(":")[1]
+        elem_type = ns.get_elem_type(session_id, prop_elem_id)
+        prop_create_status = em.create_elem_obj(session_id, prop_elem_id, elem_type)
+
+        if prop_create_status:
+            prop_elem_obj = em.get_elem_obj(session_id, prop_elem_id)
+            prop_elem_obj.props["_session_id"] = session_id
+            prop_elem_obj.props["_session_path"] = service_global.globals_path
+
+            # Assign any static values / further prop elements
+            prop_init_dict = ns.get_all_props_inits(session_id, prop_elem_id)
+            for prop in prop_init_dict:
+                if not prop_init_dict[prop] == None:
+                    sub_prop_val = prop_init_dict[prop]
+                    if isinstance(sub_prop_val, str) and sub_prop_val.split(":")[0] == "prop_elem":
+                        prop_obj = create_init_property_element(session_id, sub_prop_val)
+                        if prop_obj is None:
+                            all_success = False
+                        else:
+                            prop_elem_obj.props[prop] = prop_obj
+                    else:
+                        prop_elem_obj.props[prop] = prop_init_dict[prop]
+        else:
+            all_success = False
+    except Exception as e:
+        out.write_verbose_msg(session_id, "engine", 2,
+                              "Error while creating property element for : " + elem_id + ". Error : " + str(
+                                  e))
+        all_success = False
+
+    if all_success:
+        return prop_elem_obj
+    else:
+        return None
 
 def execute_forward_pass(session_id, inp_data):
     from Core.utils import output_util as out

@@ -2,6 +2,6 @@
     "profile_id": "tr001",
     "training_type": "online",
     "batch_size": 2,
-    "epochs": 1,
+    "epochs": 2,
     "dataset_size": 3
 }

@@ -50,9 +50,8 @@ def init_engine(session_id):
 
                 if profile_id:
                     profile_status = tfa.download_training_profile(session_id, profile_id)
-                    dataset_status = tfa.download_training_data(session_id)
 
-                    if profile_status and dataset_status:
+                    if profile_status:
                         training_check_success = True
                     else:
                         out.write_verbose_msg(session_id, "engine", 2, "Profile or dataset not downloaded.")

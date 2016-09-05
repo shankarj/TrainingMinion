@@ -40,9 +40,14 @@
       "_enabled_forward_training": true,
       "_enabled_backward_training": true,
       "props": {
-        "prop1": ""
+        "prop1": "",
+        "file_name": "",
+        "data": "",
+        "curr_data": "",
+        "curr_row_index": ""
       },
       "init": {
+        "file_name": "sample_training_data_1.csv"
       }
     }
   },
