@@ -6,7 +6,7 @@ from Core.wrappers import context_manager as cm
 # Hard reset for the given session id if already present
 def delete_session(session_id):
     if session_id in service_global.running_sessions:
-        service_global.running_sessions.remove(session_id)
+        del service_global.running_sessions[session_id]
 
     if session_id in service_global.training_sessions:
         service_global.training_sessions.remove(session_id)

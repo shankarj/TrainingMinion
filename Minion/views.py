@@ -66,6 +66,7 @@ def delete(request, session_id):
     try:
         core_api.delete_session(session_id)
         response_json["status"] = "success"
+        response_json["message"] = "Deleted session id : " + session_id
     except Exception as e:
         response_json["status"] = "error"
         response_json["message"] = "Error while deleting session " + session_id + ". " + str(e)

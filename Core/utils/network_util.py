@@ -35,12 +35,15 @@ def network_call(call_type, **args):
             from Core.utils import json_util
             return json_util.json_to_dict(the_file)
         elif call_type == nctype.notify_training_done:
-            headers = {'content-type': 'application/json'}
-            url = "http://localhost:8081/api/training/notifydone/"
-            data = {"sessionid" : args["sess_id"], "minionid": service_global.my_id}
-            resp = requests.post(url, json=data)
-            if not resp.status_code == 200:
-                out.write_verbose_msg(session_id, "engine", 100, "Error while notifying training done for id : " + args["sess_id"])
+            try:
+                headers = {'content-type': 'application/json'}
+                url = "http://localhost:8081/api/training/notifydone/"
+                data = {"sessionid" : args["sess_id"], "minionid": service_global.my_id}
+                resp = requests.post(url, json=data)
+                if not resp.status_code == 200:
+                    out.write_verbose_msg(args["sess_id"], "engine", 100, "Error while notifying training done for id : " + args["sess_id"] + ". Returned non 200")
+            except Exception as ex:
+                out.write_verbose_msg(args["sess_id"], "engine", 100, "Error while notifying training done for id : " + args["sess_id"] + ". " + str(ex))
 
     else:
         print ("Type of input not the correct enum")

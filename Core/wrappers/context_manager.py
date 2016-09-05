@@ -6,7 +6,7 @@ from Core.enums.engine_mode import EngineMode
 
 
 # Set the context of a given session variables
-def set_network_context(user_id, network_id, training_profile_id, verbose, actual_session_id):
+def set_network_context(user_id, network_id, snap_id, training_profile_id, verbose, actual_session_id):
     from Core.utils import output_util as out
 
     # Create the context dict to be persisted.
@@ -14,6 +14,7 @@ def set_network_context(user_id, network_id, training_profile_id, verbose, actua
         "verbose": verbose,
         "user_id": user_id,
         "network_id": network_id,
+        "snap_id": snap_id,
         "training_profile_id": training_profile_id
     }
 

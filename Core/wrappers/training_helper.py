@@ -9,7 +9,8 @@ def get_training_sessions():
 
 # Remove the given session id from the list of running training session ids
 def set_post_training(session_id):
-    service_global.training_sessions.remove(session_id)
+    if session_id in service_global.training_sessions:
+        service_global.training_sessions.remove(session_id)
 
     # Notify leader of completion
     nu.network_call(NetworkCallType.notify_training_done, sess_id=session_id)

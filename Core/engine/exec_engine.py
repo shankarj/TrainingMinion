@@ -7,7 +7,7 @@ from Core.utils import json_util as ju
 from Core.utils import output_util as out
 from Core.utils import general_utils as gu
 from Core.wrappers import ns_wrapper as ns
-
+from Core.globals import service_global
 
 # Prepares the network for execution by downloading network structure and connections.
 # Downloads the datasets as well.
@@ -143,7 +143,8 @@ def train_network(session_id):
         th.set_post_training(session_id)
     except Exception as ex:
         # clear the session data on any exception
-        out.write_verbose_msg(session_id, "engine", 100, "Error while initiating network training for id : " + session_id)
+        out.write_verbose_msg(session_id, "engine", 100, "Error while initiating network training for id : " + session_id + ". " + str(ex))
+        th.set_post_training(session_id)
         sm.delete_session(session_id)
 
     return training_success

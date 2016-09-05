@@ -74,7 +74,7 @@ def reset_network(session_id):
 if __name__ == '__main__':
     user_id = "shankar"
     network_id = "n001"
-    session_id = user_id + "!" + network_id
+    session_id = user_id + "!" + network_id + "!none"
 
     import base64
     import json
@@ -84,9 +84,11 @@ if __name__ == '__main__':
     sample_input = {"i001": ["i001"]}
 
     start_training(encoded_session_id)
+
     import time
     time.sleep(1)
     run_network(encoded_session_id, json.dumps(sample_input))
+
     #
     # sample_input = {"i001": ["i003"]}
     # run_network(encoded_session_id, json.dumps(sample_input))

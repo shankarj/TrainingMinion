@@ -17,7 +17,7 @@ def set_network_context(session_id):
     context_vars = nu.network_call(NetworkCallType.get_network_context)
 
     if context_vars:
-        context_set = cm.set_network_context(session_vars["user_id"], session_vars["network_id"], context_vars["training_profile_id"], context_vars["verbose"], session_id)
+        context_set = cm.set_network_context(session_vars["user_id"], session_vars["network_id"], session_vars["snap_id"], context_vars["training_profile_id"], context_vars["verbose"], session_id)
 
         if context_set:
             method_success = True

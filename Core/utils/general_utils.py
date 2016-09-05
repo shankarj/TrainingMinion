@@ -11,17 +11,18 @@ def get_session_variables(session_id):
 
         split_string = decoded_string.decode('utf-8').split("!")
 
-        if len(split_string) == 2:
+        if len(split_string) == 3:
             session_variables = {
                 "user_id" : split_string[0],
                 "network_id" : split_string[1],
+                "snap_id" : split_string[2]
             }
             return session_variables
         else:
-            out.write_verbose_msg("engine", 2, "Session variables parse fail.")
+            out.write_verbose_msg(session_id, "engine", 100, "Session variables parse fail.")
             return None
     except Exception as ex:
-        out.write_verbose_msg("engine", 2, "Session variables parse fail.")
+        out.write_verbose_msg(session_id, "engine", 100, "Session variables parse fail.")
 
 # Convert String to bool
 def get_bool_value(string_val):
