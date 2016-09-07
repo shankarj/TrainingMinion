@@ -1,4 +1,7 @@
 {
-  "training_profile_id": "tr001",
-  "verbose": true
+  "project_name": "sample_project",
+  "settings_json": {
+    "training_profile_id": "tr001",
+    "verbose": true
+  }
 }

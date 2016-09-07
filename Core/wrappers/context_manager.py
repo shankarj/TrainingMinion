@@ -6,25 +6,43 @@ from Core.enums.engine_mode import EngineMode
 
 
 # Set the context of a given session variables
-def set_network_context(user_id, network_id, snap_id, training_profile_id, verbose, actual_session_id):
+def set_network_context(session_id, session_vars, settings_vars):
     from Core.utils import output_util as out
 
-    # Create the context dict to be persisted.
-    network_context = {
-        "verbose": verbose,
-        "user_id": user_id,
-        "network_id": network_id,
-        "snap_id": snap_id,
-        "training_profile_id": training_profile_id
-    }
+    method_success = False
 
-    method_success = out.persist_context_props(actual_session_id, network_context)
-    gvu.load_context_props(actual_session_id)
+    try:
+        # Create the context dict to be persisted.
+        network_context = {
+            "project_name": settings_vars["project_name"],
+            "verbose": settings_vars["settings_json"]["verbose"],
+            "training_profile_id": settings_vars["settings_json"]["training_profile_id"],
+            "user_id": session_vars["user_id"],
+            "network_id": session_vars["network_id"],
+            "snap_id": session_vars["snap_id"]
+        }
+
+        method_success = out.persist_context_props(session_id, network_context)
+        gvu.load_context_props(session_id)
+    except Exception as ex:
+        out.write_verbose_msg("engine", 100, "Error setting context variables.")
+
     return method_success
+
+
+def get_network_id(session_id):
+    return service_global.running_sessions[session_id]["context_props"]["network_id"]
 
 
 def get_training_profile_id(session_id):
     return service_global.running_sessions[session_id]["context_props"]["training_profile_id"]
+
+
+def get_project_name(session_id):
+    return service_global.running_sessions[session_id]["context_props"]["project_name"]
+
+def get_snap_id(session_id):
+    return service_global.running_sessions[session_id]["context_props"]["snap_id"]
 
 
 def is_verbose_mode(session_id):
@@ -44,6 +62,7 @@ def is_network_initialized(session_id):
         return service_global.running_sessions[session_id]["context_props"]["init_done"]
     else:
         return False
+
 
 def set_network_initialized(session_id):
     service_global.running_sessions[session_id]["context_props"]["init_done"] = True
@@ -112,8 +131,10 @@ def is_engine_stopped(session_id):
     else:
         return False
 
+
 def get_engine_mode(session_id):
     return service_global.running_sessions[session_id]["context_props"]["engine_mode"]
+
 
 def needs_training(session_id):
     if service_global.running_sessions[session_id]["context_props"]["training_profile_id"] != "none":

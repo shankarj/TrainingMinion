@@ -36,6 +36,10 @@ def download_structure(session_id, network_id):
 def get_network_structure(session_id):
     return service_global.running_sessions[session_id]["network_structure"]
 
+# Get the complete network connections
+def get_network_conns(session_id):
+    return service_global.running_sessions[session_id]["network_conns"]
+
 
 # Get all property name, value of the given element
 def get_all_props(session_id, elem_id):

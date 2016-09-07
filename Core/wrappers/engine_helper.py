@@ -14,10 +14,10 @@ def set_network_context(session_id):
 
     # Break the session id to get the variables : uid, nid, prof_id, verbose.
     session_vars = gu.get_session_variables(session_id)
-    context_vars = nu.network_call(NetworkCallType.get_network_context)
+    settings_vars = nu.network_call(NetworkCallType.get_network_settings)
 
-    if context_vars:
-        context_set = cm.set_network_context(session_vars["user_id"], session_vars["network_id"], session_vars["snap_id"], context_vars["training_profile_id"], context_vars["verbose"], session_id)
+    if settings_vars and session_vars:
+        context_set = cm.set_network_context(session_id, session_vars, settings_vars)
 
         if context_set:
             method_success = True

@@ -139,12 +139,12 @@ def train_network(session_id):
             out.write_verbose_msg(session_id, "engine", 2, "Error while initializing network for id : " + session_id)
 
         cm.set_engine_stopped(session_id)
-        th.set_post_training(session_id)
+        th.set_post_training(session_id, True)
     except Exception as ex:
         # clear the session data on any exception
         out.write_verbose_msg(session_id, "engine", 100, "Error while initiating network training for id : " + session_id + ". " + str(ex))
         th.set_post_training(session_id)
-        sm.delete_session(session_id)
+        sm.delete_session(session_id, False)
 
     return training_success
 
