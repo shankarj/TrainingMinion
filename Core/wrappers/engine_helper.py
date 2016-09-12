@@ -12,7 +12,7 @@ import copy
 def set_network_context(session_id):
     method_success = False
 
-    # Break the session id to get the variables : uid, nid, prof_id, verbose.
+    # Break the session id to get the variables : uid, nid, snapid.
     session_vars = gu.get_session_variables(session_id)
     settings_vars = nu.network_call(NetworkCallType.get_network_settings)
 

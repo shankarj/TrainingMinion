@@ -49,7 +49,8 @@ def network_call(call_type, **args):
                         "project_name": args["project_name"],
                         "parent_id": args["parent_id"],
                         "network_structure": args["structure"],
-                        "network_conns": args["conns"]}
+                        "network_conns": args["conns"],
+                        "create_new_snapshot": args["create_new_snapshot"]}
 
                 resp = requests.post(url, json=data)
                 if not resp.status_code == 200:

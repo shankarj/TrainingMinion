@@ -59,6 +59,7 @@ def init_engine(session_id):
                     out.write_verbose_msg(session_id, "engine", 2, "Training profile id not set.")
             else:
                 # If training is not needed, we assign training checks are done.
+                out.write_verbose_msg(session_id, "engine", 2, "Training not required.")
                 training_check_success = True
 
             # Initialize the network elements and connections if everything looks good.
