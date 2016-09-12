@@ -144,8 +144,8 @@ def train_network(session_id):
     except Exception as ex:
         # clear the session data on any exception
         out.write_verbose_msg(session_id, "engine", 100, "Error while initiating network training for id : " + session_id + ". " + str(ex))
-        th.set_post_training(session_id)
-        sm.delete_session(session_id, False)
+        th.set_post_training(session_id, False)
+        sm.delete_session(session_id)
 
     return training_success
 

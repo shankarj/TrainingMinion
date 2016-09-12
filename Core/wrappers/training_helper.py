@@ -24,12 +24,13 @@ def set_post_training(session_id, training_success):
         network_structure = ns.get_network_structure(session_id)
         network_conns = ns.get_network_conns(session_id)
 
-    if cm.get_training_profile_id(session_id) != "none":
-        create_new = True
+        if cm.get_training_profile_id(session_id) != "none":
+            create_new = True
+
     # Notify leader of completion
     nu.network_call(NetworkCallType.notify_training_done, sess_id=session_id, parent_id=parent_id,
                     project_name=cm.get_project_name(session_id), structure=network_structure, conns=network_conns,
-                    create_new_snapshot=create_new)
+                    create_new_snapshot=create_new, training_result=training_success)
 
 
 # Add the given session id to the list of running training session ids
