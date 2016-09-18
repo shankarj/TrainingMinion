@@ -11,11 +11,11 @@ import copy
 # Loads the network to memory from the json file.
 def download_structure(session_id, network_id):
     method_success = False
-    network_struct_full = nu.network_call(nctype.get_network_structure)
+    network_struct_full = nu.network_call(nctype.get_network_structure, project_id=network_id)
 
     if network_struct_full:
-        network_structure = network_struct_full["network_structure"]
-        network_conns = network_struct_full["network_conns"]
+        network_structure = network_struct_full["structure_json"]
+        network_conns = network_struct_full["conns_json"]
 
         if network_structure and network_conns:
             # Persist them on file.

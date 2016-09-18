@@ -13,7 +13,10 @@ def json_to_dict(inp_json):
             # if isinstance(json_obj[key], unicode):
             #     final_obj[key] = json_obj[key].encode('utf-8')
             # else:
-            final_obj[key] = json_obj[key]
+            try:
+                final_obj[key] = json_to_dict(json_obj[key])
+            except Exception as ex:
+                final_obj[key] = json_obj[key]
     else:
         oa.write_verbose_msg("Not a valid JSON.")
         return None

@@ -6,6 +6,7 @@ import cherrypy
 import django
 from django.conf import settings
 from django.core.handlers.wsgi import WSGIHandler
+from Core.wrappers import config_manager
 import Core.core_api as core_api
 
 class DjangoApplication(object):
@@ -48,6 +49,7 @@ if __name__ == "__main__":
 
     try:
         core_api.set_engine_id(sys.argv[1])
+        config_manager.read_config_file()
         django.setup()
         DjangoApplication().run(int(port))
         print ("Your app is running at http://localhost:" + str(port))

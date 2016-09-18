@@ -25,7 +25,7 @@ def set_network_context(session_id, session_vars, settings_vars):
         method_success = out.persist_context_props(session_id, network_context)
         gvu.load_context_props(session_id)
     except Exception as ex:
-        out.write_verbose_msg("engine", 100, "Error setting context variables.")
+        out.write_verbose_msg(session_id, "engine", 100, "Error setting context variables.")
 
     return method_success
 

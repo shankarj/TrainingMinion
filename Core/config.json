@@ -1,0 +1,4 @@
+{
+  "core_endpoint": "http://localhost:8083/api",
+  "leader_endpoint": "http://localhost:8081"
+}

@@ -1,1 +1,1 @@
-{"engine_mode": "stopped", "snap_id": "none", "verbose": true, "training_profile_id": "none", "curr_batch_size": 0, "network_id": "n001", "curr_epoch": 0, "curr_training_row": 0, "training_done": false, "init_done": false, "training_direction": "", "project_name": "sample_project"}
+{"training_done": false, "training_direction": "", "curr_epoch": 0, "init_done": false, "network_id": "n001", "training_profile_id": "tr001", "project_name": "test_project", "curr_training_row": 0, "curr_batch_size": 0, "snap_id": "none", "engine_mode": "stopped", "verbose": true}

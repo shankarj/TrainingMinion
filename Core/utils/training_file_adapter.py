@@ -10,15 +10,17 @@ from Core.wrappers import ns_wrapper as ns
 def download_training_profile(session_id, training_profile_id):
     download_success = False
     try:
-        training_profile = nu.network_call(nctype.get_training_profile, profile_id=training_profile_id)
+        training_profile = nu.network_call(nctype.get_training_profile, sess_id=session_id, profile_id=training_profile_id)
 
-        # Load it to the memory
-        service_global.running_sessions[session_id]["training_profile"] = training_profile
+        if training_profile is not None:
+            # Load it to the memory
+            training_profile["profile_id"] = training_profile_id
+            service_global.running_sessions[session_id]["training_profile"] = training_profile
 
-        # Write it the json file to persist.
-        if training_profile:
             out.persist_training_profile(session_id, training_profile)
             download_success = True
+        else:
+            raise Exception("Empty training profile returned.")
     except Exception as ex:
         out.write_verbose_msg("Error : Failed downloading training profile. " + ex)
 
@@ -36,8 +38,8 @@ def download_training_data(session_id):
         for tdset_id in tdset_ids:
             try:
                 # Get properties and the actual data
-                dataset_prop = nu.network_call(nctype.get_dataset_prop, dataset_id=tdset_id)
-                training_data = nu.network_call(nctype.download_dataset, dataset_id=tdset_id)
+                dataset_prop = nu.network_call(nctype.get_dataset_prop, sess_id=session_id, dataset_id=tdset_id)
+                training_data = nu.network_call(nctype.download_dataset, sess_id=session_id, dataset_id=tdset_id)
 
                 if training_data is not None and dataset_prop is not None:
                     service_global.running_sessions[session_id]["training_data"][tdset_id] = {}

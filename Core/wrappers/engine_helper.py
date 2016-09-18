@@ -14,7 +14,9 @@ def set_network_context(session_id):
 
     # Break the session id to get the variables : uid, nid, snapid.
     session_vars = gu.get_session_variables(session_id)
-    settings_vars = nu.network_call(NetworkCallType.get_network_settings)
+
+    # Download network settings
+    settings_vars = nu.network_call(NetworkCallType.get_network_settings, sess_id=session_id, project_id=session_vars["network_id"])
 
     if settings_vars and session_vars:
         context_set = cm.set_network_context(session_id, session_vars, settings_vars)
@@ -122,11 +124,6 @@ def create_init_network(session_id):
             if create_status:
                 # Get the object created in previous step
                 elem_obj = em.get_elem_obj(session_id, elem_id)
-
-                # # Create all the properties for the current element
-                # prop_dict = ns.get_all_props(session_id, elem)
-                # for prop in prop_dict:
-                #     elem_obj.props[prop] = {}
 
                 # Initialize for this element any static values if present. Also
                 # create any property elements as well.
